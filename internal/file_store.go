@@ -3,6 +3,7 @@ package internal
 import (
 	"bufio"
 	"encoding/json"
+	"io/ioutil"
 	"os"
 
 	"github.com/cgos/yata/model"
@@ -13,9 +14,20 @@ type FileStore struct {
 	FilePath string
 }
 
-func (f *FileStore) Read() ([]*model.Todo, error) {
-	// data, err := ioutil.ReadFile(f.FilePath)
-	return nil, nil
+func (f *FileStore) Read() []*model.Todo {
+	data, err := ioutil.ReadFile(f.FilePath)
+	if err != nil {
+		panic("Unable to read file")
+	}
+
+	todolist := []*model.Todo{}
+
+	err = json.Unmarshal(data, &todolist)
+	if err != nil {
+		panic("Unable to unmarshal json from file")
+	}
+
+	return todolist
 }
 
 func (f *FileStore) Write(todolist []*model.Todo) {

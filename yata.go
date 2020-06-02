@@ -1,13 +1,7 @@
 package main
 
-import (
-	"fmt"
-
-	"github.com/cgos/yata/model"
-)
+import "github.com/cgos/yata/cmd"
 
 func main() {
-	fmt.Printf("hello toto")
-	t := model.Todo{Title: "allo"}
-	fmt.Printf("%s", t.Title)
+	cmd.Execute()
 }

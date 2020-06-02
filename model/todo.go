@@ -4,10 +4,13 @@ import "fmt"
 
 // Todo structure for yata application
 type Todo struct {
-	Title     string   `json:"title"`
-	Completed bool     `json:"completed"`
-	Labels    []string `json:"labels"`
-	Details   []string `json:"details"`
+	Title        string   `json:"title"`
+	Completed    bool     `json:"completed"`
+	Labels       []string `json:"labels"`
+	Details      []string `json:"details"`
+	CreatedDate  string   `json:"createdDate"`
+	ModifiedDate string   `json:"modifiedDate"`
+	DirtyFlag    bool     `json:"dirty"`
 }
 
 // PrintTodo returns a formatted string
