@@ -20,29 +20,35 @@ func BuildTodoFixture() []*model.Todo {
 }
 
 func TestRead(t *testing.T) {
-	fs := FileStore{FilePath: "test-yata.json"}
+	// fs := FileStore{yataFilePath: "test-yata.json"}
+	fs := NewFileStore("")
 	fs.Write(todolist)
-	defer os.Remove(fs.FilePath)
+	defer os.Remove(fs.yataFilePath)
 
 	todos := fs.Read()
 	if len(todos) != len(todolist) {
-		t.Errorf("list of todos written not same size as read")
+		t.Error("list of todos written not same size as read")
 	}
 }
 
 func TestWrite(t *testing.T) {
-	fs := FileStore{FilePath: "test-yata.json"}
+	fs := FileStore{yataFilePath: "test-yata.json"}
 	fs.Write(todolist)
-	defer os.Remove(fs.FilePath)
-	for _, item := range todolist {
-		s := item.PrintTodo()
-		t.Logf("%s", s)
+	defer os.Remove(fs.yataFilePath)
+	info, err := os.Stat(fs.yataFilePath)
+	if err != nil {
+		t.Error("Unable to retrieve file info")
 	}
+
+	if len(todolist) > 0 && info.Size() <= 2 {
+		t.Error("error")
+	}
+
 }
 
 func TestMain(m *testing.M) {
 	//check how to use subtest: https://www.reddit.com/r/golang/comments/axerii/using_testmain_on_multiple_series_of_tests/
 	todolist = BuildTodoFixture()
 	m.Run()
-	os.Exit(1)
+	os.Exit(0)
 }

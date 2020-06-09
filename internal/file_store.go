@@ -5,17 +5,32 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 
 	"github.com/cgos/yata/model"
 )
 
 // FileStore used to manage todos in file and app configs
 type FileStore struct {
-	FilePath string
+	yataFilePath string
+}
+
+// NewFileStore creates the FileStore struct
+func NewFileStore(path string) *FileStore {
+	if len(path) == 0 {
+		userHomeDir, err := os.UserHomeDir()
+		if err != nil {
+			panic("Unable to get home dir")
+		}
+		path = userHomeDir
+	}
+
+	path = filepath.Join(path, ".yata.json")
+	return &FileStore{yataFilePath: path}
 }
 
 func (f *FileStore) Read() []*model.Todo {
-	data, err := ioutil.ReadFile(f.FilePath)
+	data, err := ioutil.ReadFile(f.yataFilePath)
 	if err != nil {
 		panic("Unable to read file")
 	}
@@ -31,7 +46,7 @@ func (f *FileStore) Read() []*model.Todo {
 }
 
 func (f *FileStore) Write(todolist []*model.Todo) {
-	file, err := os.Create(f.FilePath)
+	file, err := os.Create(f.yataFilePath)
 	if err != nil {
 		panic("Cannot open file")
 	}
