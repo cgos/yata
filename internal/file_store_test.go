@@ -7,7 +7,7 @@ import (
 	"github.com/cgos/yata/model"
 )
 
-var todolist []*model.Todo
+var Todolist []*model.Todo
 
 func BuildTodoFixture() []*model.Todo {
 	todo1 := &model.Todo{Title: "first-todo", Completed: false, Labels: []string{"Main"}, Details: []string{"This section is meant to include some info about the task"}}
@@ -20,27 +20,27 @@ func BuildTodoFixture() []*model.Todo {
 }
 
 func TestRead(t *testing.T) {
-	// fs := FileStore{yataFilePath: "test-yata.json"}
-	fs := NewFileStore("")
-	fs.Write(todolist)
+	fs := FileStore{yataFilePath: "test-yata.json"}
+	// fs := NewFileStore("")
+	fs.Write(Todolist)
 	defer os.Remove(fs.yataFilePath)
 
 	todos := fs.Read()
-	if len(todos) != len(todolist) {
+	if len(todos) != len(Todolist) {
 		t.Error("list of todos written not same size as read")
 	}
 }
 
 func TestWrite(t *testing.T) {
 	fs := FileStore{yataFilePath: "test-yata.json"}
-	fs.Write(todolist)
+	fs.Write(Todolist)
 	defer os.Remove(fs.yataFilePath)
 	info, err := os.Stat(fs.yataFilePath)
 	if err != nil {
 		t.Error("Unable to retrieve file info")
 	}
 
-	if len(todolist) > 0 && info.Size() <= 2 {
+	if len(Todolist) > 0 && info.Size() <= 2 {
 		t.Error("error")
 	}
 
@@ -48,7 +48,7 @@ func TestWrite(t *testing.T) {
 
 func TestMain(m *testing.M) {
 	//check how to use subtest: https://www.reddit.com/r/golang/comments/axerii/using_testmain_on_multiple_series_of_tests/
-	todolist = BuildTodoFixture()
+	Todolist = BuildTodoFixture()
 	m.Run()
 	os.Exit(0)
 }

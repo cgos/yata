@@ -31,11 +31,10 @@ func NewFileStore(path string) *FileStore {
 
 func (f *FileStore) Read() []*model.Todo {
 	data, err := ioutil.ReadFile(f.yataFilePath)
-	if err != nil {
-		panic("Unable to read file")
-	}
-
 	todolist := []*model.Todo{}
+	if err != nil {
+		return todolist
+	}
 
 	err = json.Unmarshal(data, &todolist)
 	if err != nil {
@@ -46,6 +45,10 @@ func (f *FileStore) Read() []*model.Todo {
 }
 
 func (f *FileStore) Write(todolist []*model.Todo) {
+	if len(todolist) == 0 {
+		return
+	}
+
 	file, err := os.Create(f.yataFilePath)
 	if err != nil {
 		panic("Cannot open file")

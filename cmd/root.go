@@ -17,8 +17,7 @@ var cfgFile string
 var rootCmd = &cobra.Command{
 	Use:   "yata",
 	Short: "Yet Another Todo App",
-	Long: `Yet Another Todo App to simply manage lists of todos
-			Complete source code can be found here: https://github.com/cgos/yata`,
+	Long:  `Yet Another Todo App to simply manage lists of todos. Complete source code can be found here: https://github.com/cgos/yata`,
 	// Run: func(cmd *cobra.Command, args []string) {
 	// 	//Noting yet
 	// },
