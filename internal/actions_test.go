@@ -7,7 +7,7 @@ import (
 	"github.com/cgos/yata/model"
 )
 
-func TestAdd(t *testing.T) {
+func TestAddOne(t *testing.T) {
 	fs := &FileStore{yataFilePath: "test-yata.json"}
 	defer os.Remove(fs.yataFilePath)
 
@@ -17,6 +17,22 @@ func TestAdd(t *testing.T) {
 	todos := fs.Read()
 	if len(todos) != 1 {
 		t.Error("list of todos written not same size as read")
+	}
+}
+
+func TestAddMany(t *testing.T) {
+	fs := &FileStore{yataFilePath: "test-yata.json"}
+	defer os.Remove(fs.yataFilePath)
+
+	// todolist := BuildTodoFixture()
+
+	for _, todo := range Todolist {
+		Add(todo, fs)
+	}
+
+	readTodos := fs.Read()
+	if len(readTodos) != len(Todolist) {
+		t.Error("Missing stored todos")
 	}
 }
 
@@ -31,5 +47,3 @@ func TestAddEmpty(t *testing.T) {
 		t.Error("list of todos written not same size as read")
 	}
 }
-
-complete tests
