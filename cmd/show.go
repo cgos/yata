@@ -15,7 +15,7 @@ var showCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Echo: " + strings.Join(args, ""))
 		fs := internal.NewFileStore("")
-		internal.Add(nil, fs)
+		internal.Show("", fs)
 	},
 }
 
